@@ -22,7 +22,40 @@ main:
 	ldr r1, =select_buff
 	bl scanf
 
+@ if input is 1, perform option 1
+	ldr r1, =format_select
+	ldr r1, [r1]
+	cmp r1, #1
+	beq option1
 
+@ if input is 2, perform option 2
+	cmp r1, #2
+	beq option2
+
+@ if input is 3, perform option 3
+	cmp r1, #3
+	beq option3
+
+@ if input is 4, perform option 4
+	cmp r1, #4
+	beq option4
+
+@ if input is 5, quit the program
+	cmp r1, #5
+	beq exit
+
+option1:
+option2:
+option3:
+option4:
+option5:
+
+exit:
+	ldr r0, =done
+	bl printf
+	mov r7, #1
+	mov r0, #0
+	svc 0
 .data
 	welcome:	.asciz "\nWelcome to our Scheduler. Please choose an action: \n"
 	add_set:	.asciz "\n1. Add Set Event"
