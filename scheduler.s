@@ -244,11 +244,8 @@ schedule: @Print a portion of the schedule
 	beq main
 
 	cmp r1, #2
-	moveq r1, r3
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =print_tues
-	bleq printf
-	ldreq r0, =select_buff
-	bleq printf
 	beq main
 
 	cmp r1, #3
