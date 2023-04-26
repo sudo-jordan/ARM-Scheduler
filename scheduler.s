@@ -72,55 +72,83 @@ set: @Add an event, set time
 	bl createTimeSlot @call to createTimeSlot
 	
 	cmp r1, #1 @Monday edit
+	bx mondayEdit
+	b loop
+	cmp r1, #2 @Tuesday edit
+	bx tuesdayEdit
+	b loop
+	cmp r1, #3 @Wednesday edit
+	bx wednesdayEdit
+	b loop
+	cmp r1, #4 @Thursday edit
+	bx thursdayEdit
+	b loop
+	cmp r1, #5 @Friday edit
+	bx fridayEdit
+	b loop
+	cmp r1, #6 @Saturday edit
+	bx saturdayEdit
+	b loop
+	cmp r1, #7 @Sunday edit
+	bx sundayEdit
+	b loop
+	
+mondayEdit:
+	push {lr}
 	mov r2, r9 @Setup for check
 	bl overlapCheck 
 	orreq r2, r11
-	b loop
+	pop {lr}
+	bx lr
 	
-	cmp r1, #2 @Tuesday edit
+tuesdayEdit:
+	push {lr}
 	mov r3, r9 @Setup for check
 	bl overlapCheck 
 	orreq r3, r11
-	b loop
-	
-	cmp r1, #3 @Wednesday edit
+	pop {lr}
+	bx lr
+
+wednesdayEdit:
+	push {lr}
 	mov r4, r9 @Setup for check
 	bl overlapCheck 
 	orreq r4, r11
-	b loop
-	
-	cmp r1, #4 @Thursday edit
+	pop {lr}
+	bx lr
+
+thursdayEdit:
+	push {lr}
 	mov r5, r9 @Setup for check
 	bl overlapCheck 
 	orreq r5, r11
-	b loop
-	
-	cmp r1, #5 @Friday edit
+	pop {lr}
+	bx lr
+
+fridayEdit:
+	push {lr}
 	mov r6, r9 @Setup for check
 	bl overlapCheck 
 	orreq r6, r11
-	b loop
-	
-	cmp r1, #6 @Saturday edit
+	pop {lr}
+	bx lr
+
+saturdayEdit:
+	push {lr}
 	mov r7, r9 @Setup for check
 	bl overlapCheck 
 	orreq r7, r11
-	b loop
-	
-	cmp r1, #7 @Sunday edit
-	mov r7, r9 @Setup for check
-	bl overlapCheck 
-	orreq r7, r11 @Only edit if there is no overlap
-	b loop
-	
-overlapCheck: @Check to ensure there is no overlap
-	mov r10, r9 @Copy into r10
-	mov r12, r9 @Copy into r12
-	orr r12, r11 
-	eor r10, r11
-	cmp r12, r10 @Exclusive or and or should be equal if there is no overlap
+	pop {lr}
 	bx lr
-	
+
+sundayEdit:
+	push {lr}
+	mov r8, r9 @Setup for check
+	bl overlapCheck 
+	orreq r8, r11 @Only edit if there is no overlap
+	pop {lr}
+	bx lr
+
 createTimeSlot: @Creates a mask for editing time slots
 	ldr r11, =#0xFFFFFFFF @reset time slot
 	mov r12, #32 @Number of bits
@@ -129,6 +157,14 @@ createTimeSlot: @Creates a mask for editing time slots
 	lsr r11, r12 @Fully right-shifted
 	lsl r11, r9 @r11 in proper location
 	bx lr @return to setting
+	
+overlapCheck: @Check to ensure there is no overlap
+	mov r10, r9 @Copy into r10
+	mov r12, r9 @Copy into r12
+	orr r12, r11 
+	eor r10, r11
+	cmp r12, r10 @Exclusive or and or should be equal if there is no overlap
+	bx lr
 	
 flex: @Add an event, flexible time
 
