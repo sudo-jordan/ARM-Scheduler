@@ -98,25 +98,25 @@ set: @Add an event, set time
         bl takeInput @take input, sets day choice to r1 and time mask to r11
 	
 	cmp r1, #1 @Monday edit
-	bl mondayEdit
-	b main
+	bleq mondayEdit
+	beq main
 	cmp r1, #2 @Tuesday edit
-	bl tuesdayEdit
-	b main
+	bleq tuesdayEdit
+	beq main
 	cmp r1, #3 @Wednesday edit
-	bl wednesdayEdit
-	b main
+	bleq wednesdayEdit
+	beq main
 	cmp r1, #4 @Thursday edit
-	bl thursdayEdit
-	b main
+	bleq thursdayEdit
+	beq main
 	cmp r1, #5 @Friday edit
-	bl fridayEdit
-	b main
+	bleq fridayEdit
+	beq main
 	cmp r1, #6 @Saturday edit
-	bl saturdayEdit
-	b main
+	bleq saturdayEdit
+	beq main
 	cmp r1, #7 @Sunday edit
-	bl sundayEdit
+	bleq sundayEdit
 	b main
 	
 clear: @clear time out
@@ -125,26 +125,26 @@ clear: @clear time out
 	eor r11, r12 @Inverts r11
 	
 	cmp r1, #1 @Monday clear
-	bl mondayClear
-	b main
+	bleq mondayClear
+	beq main
 	cmp r1, #2 @Tuesday clear
-	bl tuesdayClear
-	b main
+	bleq tuesdayClear
+	beq main
 	cmp r1, #3 @Wednesday clear
-	bl wednesdayClear
-	b main
+	bleq wednesdayClear
+	beq main
 	cmp r1, #4 @Thursday clear
-	bl thursdayClear
-	b main
+	bleq thursdayClear
+	beq main
 	cmp r1, #5 @Friday clear
-	bl fridayClear
-	b main
+	bleq fridayClear
+	beq main
 	cmp r1, #6 @Saturday clear
-	bl saturdayClear
-	b main
+	bleq saturdayClear
+	beq main
 	cmp r1, #7 @Sunday clear
-	bl sundayClear
-	b main
+	bleq sundayClear
+	beq main
 	
 flex: @Add an event, flexible time
 	ldr r0, =time_length
@@ -383,10 +383,10 @@ createTimeSlot: @Creates a mask for editing time slots, r11
 	
 overlapCheck: @Check to ensure there is no overlap
 	mov r10, r9 @Copy into r10
-	mov r12, r9 @Copy into r12
-	orr r12, r11 
+	mov r0, r9 @Copy into r12
+	orr r0, r11 
 	eor r10, r11
-	cmp r12, r10 @Exclusive or and or should be equal if there is no overlap
+	cmp r0, r10 @Exclusive or and or should be equal if there is no overlap
 	bx lr
 
 help: @Display help
