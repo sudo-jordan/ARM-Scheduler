@@ -162,70 +162,63 @@ flex: @Add an event, flexible time
 	mov r3, #0
 	b flexCheck
 	
-flexCheck: @Check the first time slot for each day, attempting an edit. If none found, lsl r0 and check next time slot. Loop until all slots checked.
+flexCheck: @Check the first time slot for each day, attempting an edit. If none found, lsl r11 and check next time slot. Loop until all slots checked.
 	cmp r3, #23
 	ldreq r0, =no_time
 	bleq printf
         beq loop
 	
 	bl mondayEdit @Attempt to edit Monday
-	cmp r11, r4 @Check to see if r2 has been edited
-	moveq r1, r0 @save the count to r12 for safekeeping
+	cmp r2, r4 @Check to see if r4 has been edited
+	moveq r1, r3 @save the count to r1 for safekeeping
 	ldreq r0, =flex_monday @Confirm placement
 	bleq printf
-	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
 	
 	bl tuesdayEdit @Attempt to edit Tuesday
-	cmp r11, r5 @Check to see if r3 has been edited
-	moveq r1, r0 @save the count to r12 for safekeeping
+	cmp r2, r5 @Check to see if r5 has been edited
+	moveq r1, r3 @save the count to r1 for safekeeping
 	ldreq r0, =flex_tuesday @Confirm placement
 	bleq printf
-	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
 	
 	bl wednesdayEdit @Attempt to edit Wednesday
-	cmp r11, r6 @Check to see if r4 has been edited
-	moveq r1, r0 @save the count to r12 for safekeeping
+	cmp r2, r6 @Check to see if r6 has been edited
+	moveq r1, r3 @save the count to r1 for safekeeping
 	ldreq r0, =flex_wednesday @Confirm placement
 	bleq printf
-	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
 	
 	bl thursdayEdit @Attempt to edit Thursday
-	cmp r11, r7 @Check to see if r5 has been edited
-	moveq r1, r0 @save the count to r12 for safekeeping
+	cmp r2, r7 @Check to see if r7 has been edited
+	moveq r1, r3 @save the count to r1 for safekeeping
 	ldreq r0, =flex_thursday @Confirm placement
 	bleq printf
-	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
 	
 	bl fridayEdit @Attempt to edit friday
-	cmp r11, r8 @Check to see if r6 has been edited
-	moveq r1, r0 @save the count to r12 for safekeeping
+	cmp r2, r8 @Check to see if r8 has been edited
+	moveq r1, r3 @save the count to r1 for safekeeping
 	ldreq r0, =flex_friday @Confirm placement
 	bleq printf
-	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
 	
 	bl saturdayEdit @Attempt to edit Saturday
-	cmp r11, r9 @Check to see if r7 has been edited
-	moveq r1, r0 @save the count to r12 for safekeeping
+	cmp r2, r9 @Check to see if r9 has been edited
+	moveq r1, r3 @save the count to r12 for safekeeping
 	ldreq r0, =flex_saturday @Confirm placement
 	bleq printf
-	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
 	
 	bl sundayEdit @Attempt to edit Sunday
-	cmp r11, r10 @Check to see if r8 has been edited
-	moveq r1, r0 @save the count to r12 for safekeeping
+	cmp r2, r10 @Check to see if r10 has been edited
+	moveq r1, r3 @save the count to r1 for safekeeping
 	ldreq r0, =flex_sunday @Confirm placement
 	bleq printf
-	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
 	
-	adds r0, #1 @Increment time slot counter
-	lsl r0, #1 @If no open time slots found, shift one time slot over
+	adds r3, #1 @Increment time slot counter
+	lsl r11, #1 @If no open time slots found, shift one time slot over
 	b flexCheck
 
 schedule: @Print a portion of the schedule
