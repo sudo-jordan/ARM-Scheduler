@@ -26,7 +26,7 @@ main:
 	ldr r0, =format_select
 	ldr r1, =select_buff
 	bl scanf
-	ldr r1, =format_select
+	ldr r1, =select_buff
 	ldr r1, [r1]
 
 @ if input is 1, set event
@@ -70,12 +70,18 @@ takeInput:
         bl printf
         ldr r0, =format_select
         ldr r1, =select_buff
+	bl scanf
+        ldr r1, =select_buff
+        ldr r1, [r1]
         mov r10, r1 @Copy input to r10, this will be the length of the event
         @Take another input, same as before, use choose_day for a prompt
         ldr r0, =choose_day
         bl printf
         ldr r0, =format_select
         ldr r1, =select_buff
+	bl scanf
+        ldr r1, =select_buff
+        ldr r1, [r1]
         bl createTimeSlot @call to createTimeSlot
 	pop {lr}
 	bx lr @Return to either set or clear
