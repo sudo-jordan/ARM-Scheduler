@@ -239,7 +239,8 @@ schedule: @Print a portion of the schedule
 	moveq r1, r2
 	ldreq r0, =print_mon
 	bleq printf
-	ldreq r0, =select_buff
+	ldreq r0, =format_select
+	ldreq r1, =select_buff
 	bleq printf
 	beq main
 
@@ -289,8 +290,8 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	b main
-	
+	beq main
+
 mondayEdit:
 	push {lr}
 	mov r9, r2 @Setup for check
@@ -426,7 +427,7 @@ exit: @Exit the program
 	flex_saturday:	.asciz "\nThis event has been placed on Saturday at time slot %d\n"
 	flex_sunday:	.asciz "\nThis event has been placed on Sunday at time slot %d\n"
 	choose_sched:	.asciz "\nWhich day of your schedule would you like to print? > "
-	print_mon:      .asciz "\nMonday: %d\n"
+	print_mon:      .asciz "\nMonday: "
         print_tues:     .asciz "\nTuesday: %d\n"
         print_wed:      .asciz "\nWednesday: %d\n"
         print_thurs:    .asciz "\nThursday: %d\n"
