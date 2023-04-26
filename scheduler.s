@@ -48,11 +48,11 @@ main:
 @ if input is 5, show help
 	cmp r1, #5
 	beq help
-	
+
 @ if input is 6, quit the program
 	cmp r1, #6
 	beq exit
-	
+
 	b main @If none of the above are entered, restart loop
 
 takeInput:
@@ -219,7 +219,62 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	b flexCheck
 
 schedule: @Print a portion of the schedule
-	
+	ldreq r0, =choose_sched
+	bleq printf
+	ldreq r0, =format_select
+	ldreq r1, =select_buff
+	bleq scanf
+	ldreq r1, =select_buff
+	ldreq r1, [r1]
+
+	cmp r1, #1
+	moveq r1, r2
+	ldreq r0, =print_mon
+	bleq printf
+	ldreq r0, =select_buff
+	bleq printf
+
+	cmp r1, #2
+	moveq r1, r3
+	ldreq r0, =print_tues
+	bleq printf
+	ldreq r0, =select_buff
+	bleq printf
+
+	cmp r1, #3
+	moveq r1, r4
+	ldreq r0, =print_wed
+	bleq printf
+	ldreq r0, =select_buff
+	bleq printf
+
+	cmp r1, #4
+	moveq r1, r5
+	ldreq r0, =print_thurs
+	bleq printf
+	ldreq r0, =select_buff
+	bleq printf
+
+	cmp r1, #5
+	moveq r1, r6
+	ldreq r0, =print_fri
+	bleq printf
+	ldreq r0, =select_buff
+	bleq printf
+
+	cmp r1, #6
+	moveq r1, r7
+	ldreq r0, =print_sat
+	bleq printf
+	ldreq r0, =select_buff
+	bleq printf
+
+	cmp r1, #7
+	moveq r1, r8
+	ldreq r0, =print_sun
+	bleq printf
+	ldreq r0, =select_buff
+	bleq printf
 mondayEdit:
 	push {lr}
 	mov r9, r2 @Setup for check
@@ -354,6 +409,7 @@ exit: @Exit the program
 	flex_friday:	.asciz "\nThis event has been placed on Friday at time slot %d\n"
 	flex_saturday:	.asciz "\nThis event has been placed on Saturday at time slot %d\n"
 	flex_sunday:	.asciz "\nThis event has been placed on Sunday at time slot %d\n"
+	choose_sched:	.asciz "\nWhich day of your schedule would you like to print? > "
 	print_mon:      .asciz "\nMonday: %d\n"
         print_tues:     .asciz "\nTuesday: %d\n"
         print_wed:      .asciz "\nWednesday: %d\n"
