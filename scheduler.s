@@ -63,7 +63,7 @@ set: @Add an event, set time
 	ldr r0, =format_select
 	ldr r1, =select_buff
 	bl scanf
-	ldr r1, =format_select
+	ldr r1, =select_buff
 	ldr r1, [r1]
 	mov r9, r1 @Copy input to r9, this will be the start time
 	@Take another input, same as before, use time_length for a prompt
