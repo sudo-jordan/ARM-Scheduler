@@ -125,25 +125,25 @@ clear: @clear time out
 	eor r11, r12 @Inverts r11
 	
 	cmp r1, #1 @Monday clear
-	bleq mondayClear
+	andeq r2, r11
 	beq main
 	cmp r1, #2 @Tuesday clear
-	bleq tuesdayClear
+	andeq r3, r11
 	beq main
 	cmp r1, #3 @Wednesday clear
-	bleq wednesdayClear
+	andeq r4, r11
 	beq main
 	cmp r1, #4 @Thursday clear
-	bleq thursdayClear
+	andeq r5, r11
 	beq main
 	cmp r1, #5 @Friday clear
-	bleq fridayClear
+	andeq r6, r11
 	beq main
 	cmp r1, #6 @Saturday clear
-	bleq saturdayClear
+	andeq r7, r11
 	beq main
 	cmp r1, #7 @Sunday clear
-	bleq sundayClear
+	andeq r8, r11
 	beq main
 	
 flex: @Add an event, flexible time
@@ -296,20 +296,12 @@ mondayEdit:
 	pop {lr}
 	bx lr
 	
-mondayClear:
-	and r2, r11
-	bx lr
-	
 tuesdayEdit:
 	push {lr}
 	mov r9, r3 @Setup for check
 	bl overlapCheck 
 	orreq r3, r11
 	pop {lr}
-	bx lr
-	
-tuesdayClear:
-	and r3, r11
 	bx lr
 
 wednesdayEdit:
@@ -319,10 +311,6 @@ wednesdayEdit:
 	orreq r4, r11
 	pop {lr}
 	bx lr
-	
-wednesdayClear:
-	and r4, r11
-	bx lr
 
 thursdayEdit:
 	push {lr}
@@ -330,10 +318,6 @@ thursdayEdit:
 	bl overlapCheck 
 	orreq r5, r11
 	pop {lr}
-	bx lr
-	
-thursdayClear:
-	and r5, r11
 	bx lr
 
 fridayEdit:
@@ -343,10 +327,6 @@ fridayEdit:
 	orreq r6, r11
 	pop {lr}
 	bx lr
-
-fridayClear:
-	and r6, r11
-	bx lr
 	
 saturdayEdit:
 	push {lr}
@@ -355,10 +335,6 @@ saturdayEdit:
 	orreq r7, r11
 	pop {lr}
 	bx lr
-	
-saturdayClear:
-	and r7, r11
-	bx lr
 
 sundayEdit:
 	push {lr}
@@ -366,10 +342,6 @@ sundayEdit:
 	bl overlapCheck 
 	orreq r8, r11 @Only edit if there is no overlap
 	pop {lr}
-	bx lr
-	
-sundayClear:
-	and r8, r11
 	bx lr
 
 createTimeSlot: @Creates a mask for editing time slots, r11
