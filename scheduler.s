@@ -79,7 +79,7 @@ takeInput:
         ldr r0, =format_select
         ldr r1, =select_buff
         bl createTimeSlot @call to createTimeSlot
-	pop{lr}
+	pop {lr}
 	bx lr @Return to either set or clear
 
 set: @Add an event, set time
