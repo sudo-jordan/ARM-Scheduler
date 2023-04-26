@@ -2,9 +2,7 @@
 @Created by Jordan Saleh and William Daniel Vasquez
 @R2-8 are used to hold data for days of the week
 .global main
-main: @Main is used for setup
-
-loop:
+main:
 
 @ print entire menu
 	ldr r0, =welcome
@@ -55,7 +53,7 @@ loop:
 	cmp r1, #6
 	beq exit
 	
-	b loop @If none of the above are entered, restart loop
+	b main @If none of the above are entered, restart loop
 
 takeInput:
 	push {lr}
@@ -87,25 +85,25 @@ set: @Add an event, set time
 	
 	cmp r1, #1 @Monday edit
 	bl mondayEdit
-	b loop
+	b main
 	cmp r1, #2 @Tuesday edit
 	bl tuesdayEdit
-	b loop
+	b main
 	cmp r1, #3 @Wednesday edit
 	bl wednesdayEdit
-	b loop
+	b main
 	cmp r1, #4 @Thursday edit
 	bl thursdayEdit
-	b loop
+	b main
 	cmp r1, #5 @Friday edit
 	bl fridayEdit
-	b loop
+	b main
 	cmp r1, #6 @Saturday edit
 	bl saturdayEdit
-	b loop
+	b main
 	cmp r1, #7 @Sunday edit
 	bl sundayEdit
-	b loop
+	b main
 	
 clear: @clear time out
 	bl takeInput @take input, sets day choice to r1 and a time mask to r11
@@ -114,25 +112,25 @@ clear: @clear time out
 	
 	cmp r1, #1 @Monday clear
 	bl mondayClear
-	b loop
+	b main
 	cmp r1, #2 @Tuesday clear
 	bl tuesdayClear
-	b loop
+	b main
 	cmp r1, #3 @Wednesday clear
 	bl wednesdayClear
-	b loop
+	b main
 	cmp r1, #4 @Thursday clear
 	bl thursdayClear
-	b loop
+	b main
 	cmp r1, #5 @Friday clear
 	bl fridayClear
-	b loop
+	b main
 	cmp r1, #6 @Saturday clear
 	bl saturdayClear
-	b loop
+	b main
 	cmp r1, #7 @Sunday clear
 	bl sundayClear
-	b loop
+	b main
 	
 mondayEdit:
 	push {lr}
@@ -242,7 +240,7 @@ schedule: @Print a portion of the schedule
 help: @Display help
 	ldr r0, =full_help
 	bl printf
-	b loop @Return to the loop
+	b main @Return to the loop
 
 exit: @Exit the program
 	ldr r0, =done
