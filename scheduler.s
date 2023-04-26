@@ -193,9 +193,9 @@ exit: @Exit the program
 	bye:		.asciz "\n6. Quit"
 	choose_day:	.asciz "\nChoose Day: "
 	start_time:	.asciz "\nChoose Start Time: "
-	time_length	.asciz "\nHow long will the event last: "
+	time_length:	.asciz "\nHow long will the event last: "
 	select:		.asciz "\n\nSelect a menu option> "
 	done:		.asciz "\nExiting!"
-	full_help	.asciz "\nWhen choosing a day, input a number 1-7, with Monday being equal to 1.\nWhen choosing a time, please input the hour only, and use military time.\nNo change will be made if there is overlap or if there is no possible way to fit a flexible event."
+	full_help:	.asciz "\nWhen choosing a day, input a number 1-7, with Monday being equal to 1.\nWhen choosing a time, please input the hour only, and use military time.\nNo change will be made if there is overlap or if there is no possible way to fit a flexible event."
 	format_select:	.asciz "%d"
 	select_buff:	.word 0
