@@ -1,5 +1,10 @@
+@scheduler.s
+@Created by Jordan Saleh and William Daniel Vasquez
+@R2-8 are used to hold data for days of the week
 .global main
-main:
+main: @Main is used for setup
+
+loop:
 
 @ print entire menu
 	ldr r0, =welcome
@@ -12,6 +17,8 @@ main:
 	bl printf
 	ldr r0, =print_sched
 	bl printf
+	ldr r0, =menu_help
+	bl printf
 	ldr r0, =bye
 	bl printf
 
@@ -21,36 +28,49 @@ main:
 	ldr r0, =format_select
 	ldr r1, =select_buff
 	bl scanf
-
-@ if input is 1, perform option 1
 	ldr r1, =format_select
 	ldr r1, [r1]
+
+@ if input is 1, set event
 	cmp r1, #1
-	beq option1
+	beq set
 
-@ if input is 2, perform option 2
+@ if input is 2, flexible event
 	cmp r1, #2
-	beq option2
+	beq flex
 
-@ if input is 3, perform option 3
+@ if input is 3, clear time
 	cmp r1, #3
-	beq option3
+	beq clear
 
-@ if input is 4, perform option 4
+@ if input is 4, print schedule
 	cmp r1, #4
-	beq option4
+	beq schedule
 
-@ if input is 5, quit the program
+@ if input is 5, perform option 5
 	cmp r1, #5
+	beq option4
+	
+@ if input is 6, quit the program
+	cmp r1, #6
 	beq exit
+	
+	b loop @If none of the above are entered, restart loop
 
-option1:
-option2:
-option3:
-option4:
-option5:
+set: @Add an event, set time
 
-exit:
+flex: @Add an event, flexible time
+
+clear: @Clear out time
+
+schedule: @Print a portion of the schedule
+
+help: @Display help
+	ldr r0, =full_help
+	bl printf
+	b loop @Return to the loop
+
+exit: @Exit the program
 	ldr r0, =done
 	bl printf
 	mov r7, #1
@@ -62,11 +82,13 @@ exit:
 	add_flex:	.asciz "\n2. Add Flexible Event"
 	clear_time:	.asciz "\n3. Clear Time"
 	print_sched:	.asciz "\n4. Print Schedule"
-	bye:		.asciz "\n5. Quit"
+	menu_help:	.asciz "\n5. Help"
+	bye:		.asciz "\n6. Quit"
 	choose_day:	.asciz "\nChoose Day: "
-	choose_time:	.asciz "\nChoose Time: "
-	select:		.asciz "\n\nSelect > "
+	start_time:	.asciz "\nChoose Start Time: "
+	time_length	.asciz "\nHow long will the event last: "
+	select:		.asciz "\n\nSelect a menu option> "
 	done:		.asciz "\nExiting!"
-
+	full_help	.asciz "\nWhen choosing a day, input a number 1-7, with Monday being equal to 1. When choosing a time, please input the hour only, and use military time."
 	format_select:	.asciz "%d"
 	select_buff:	.word 0
