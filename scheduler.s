@@ -241,7 +241,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	b main
+	beq main
 
 	cmp r1, #2
 	moveq r1, r3
@@ -249,7 +249,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	b main
+	beq main
 
 	cmp r1, #3
 	moveq r1, r4
@@ -257,7 +257,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	b main
+	beq main
 
 	cmp r1, #4
 	moveq r1, r5
@@ -265,7 +265,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	b main
+	beq main
 
 	cmp r1, #5
 	moveq r1, r6
@@ -273,7 +273,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	b main
+	beq main
 
 	cmp r1, #6
 	moveq r1, r7
@@ -281,7 +281,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	b main
+	beq main
 
 	cmp r1, #7
 	moveq r1, r8
