@@ -2,6 +2,14 @@
 @Created by Jordan Saleh and William Daniel Vasquez
 @R2-8 are used to hold data for days of the week
 .global main
+setup:
+mov r2, #0
+mov r3, #0
+mov r4, #0
+mov r5, #0
+mov r6, #0
+mov r7, #0
+mov r8, #0
 main:
 
 @ print entire menu
