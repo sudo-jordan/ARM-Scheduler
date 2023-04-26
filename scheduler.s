@@ -140,7 +140,7 @@ clear: @clear time out
 	
 mondayEdit:
 	push {lr}
-	mov r2, r9 @Setup for check
+	mov r9, r2 @Setup for check
 	bl overlapCheck 
 	orreq r2, r11
 	pop {lr}
@@ -152,7 +152,7 @@ mondayClear:
 	
 tuesdayEdit:
 	push {lr}
-	mov r3, r9 @Setup for check
+	mov r9, r3 @Setup for check
 	bl overlapCheck 
 	orreq r3, r11
 	pop {lr}
@@ -164,7 +164,7 @@ tuesdayClear:
 
 wednesdayEdit:
 	push {lr}
-	mov r4, r9 @Setup for check
+	mov r9, r4 @Setup for check
 	bl overlapCheck 
 	orreq r4, r11
 	pop {lr}
@@ -176,7 +176,7 @@ wednesdayClear:
 
 thursdayEdit:
 	push {lr}
-	mov r5, r9 @Setup for check
+	mov r9, r5 @Setup for check
 	bl overlapCheck 
 	orreq r5, r11
 	pop {lr}
@@ -188,7 +188,7 @@ thursdayClear:
 
 fridayEdit:
 	push {lr}
-	mov r6, r9 @Setup for check
+	mov r9, r6 @Setup for check
 	bl overlapCheck 
 	orreq r6, r11
 	pop {lr}
@@ -200,7 +200,7 @@ fridayClear:
 	
 saturdayEdit:
 	push {lr}
-	mov r7, r9 @Setup for check
+	mov r9, r7 @Setup for check
 	bl overlapCheck 
 	orreq r7, r11
 	pop {lr}
@@ -212,7 +212,7 @@ saturdayClear:
 
 sundayEdit:
 	push {lr}
-	mov r8, r9 @Setup for check
+	mov r9, r8 @Setup for check
 	bl overlapCheck 
 	orreq r8, r11 @Only edit if there is no overlap
 	pop {lr}
