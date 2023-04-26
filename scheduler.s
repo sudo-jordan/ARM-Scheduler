@@ -58,18 +58,27 @@ loop:
 	b loop @If none of the above are entered, restart loop
 
 set: @Add an event, set time
-	ldr r0, =start_time
-	bl printf
-	ldr r0, =format_select
-	ldr r1, =select_buff
-	bl scanf
-	ldr r1, =select_buff
-	ldr r1, [r1]
-	mov r9, r1 @Copy input to r9, this will be the start time
-	@Take another input, same as before, use time_length for a prompt
-	mov r10, r1 @Copy input to r10, this will be the length of the event
-	@Take another input, same as before, use choose_day for a prompt
-	bl createTimeSlot @call to createTimeSlot
+        ldr r0, =start_time
+        bl printf
+        ldr r0, =format_select
+        ldr r1, =select_buff
+        bl scanf
+        ldr r1, =select_buff
+        ldr r1, [r1]
+        mov r9, r1 @Copy input to r9, this will be the start time
+        @Take another input, same as before, use time_length for a prompt
+        ldr r0, =time_length
+        bl printf
+        ldr r0, =format_select
+        ldr r1, =select_buff
+        mov r10, r1 @Copy input to r10, this will be the length of the event
+        @Take another input, same as before, use choose_day for a prompt
+        ldr r0, =choose_day
+        bl printf
+        ldr r0, =format_select
+        ldr r1, =select_buff
+        @ not sure if u wanna move it somewhere
+        bl createTimeSlot @call to createTimeSlot
 	
 	cmp r1, #1 @Monday edit
 	bx mondayEdit
