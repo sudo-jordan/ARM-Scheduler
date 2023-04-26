@@ -160,7 +160,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	
 	bl mondayEdit @Attempt to edit Monday
 	cmp r9, r2 @Check to see if r2 has been edited
-	moveq r12, r0 @save the count to r12 for safekeeping
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_monday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
@@ -168,7 +168,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	
 	bl tuesdayEdit @Attempt to edit Tuesday
 	cmp r9, r3 @Check to see if r3 has been edited
-	moveq r12, r0 @save the count to r12 for safekeeping
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_tuesday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
@@ -176,7 +176,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	
 	bl wednesdayEdit @Attempt to edit Wednesday
 	cmp r9, r4 @Check to see if r4 has been edited
-	moveq r12, r0 @save the count to r12 for safekeeping
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_wednesday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
@@ -184,7 +184,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	
 	bl thursdayEdit @Attempt to edit Thursday
 	cmp r9, r5 @Check to see if r5 has been edited
-	moveq r12, r0 @save the count to r12 for safekeeping
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_thursday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
@@ -192,7 +192,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	
 	bl fridayEdit @Attempt to edit friday
 	cmp r9, r6 @Check to see if r6 has been edited
-	moveq r12, r0 @save the count to r12 for safekeeping
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_friday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
@@ -200,7 +200,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	
 	bl saturdayEdit @Attempt to edit Saturday
 	cmp r9, r7 @Check to see if r7 has been edited
-	moveq r12, r0 @save the count to r12 for safekeeping
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_saturday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
@@ -208,7 +208,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	
 	bl sundayEdit @Attempt to edit Sunday
 	cmp r9, r8 @Check to see if r8 has been edited
-	moveq r12, r0 @save the count to r12 for safekeeping
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_sunday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
