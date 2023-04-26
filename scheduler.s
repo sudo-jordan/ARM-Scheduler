@@ -354,5 +354,12 @@ exit: @Exit the program
 	flex_friday:	.asciz "\nThis event has been placed on Friday at time slot %d\n"
 	flex_saturday:	.asciz "\nThis event has been placed on Saturday at time slot %d\n"
 	flex_sunday:	.asciz "\nThis event has been placed on Sunday at time slot %d\n"
+	print_mon:      .asciz "\nMonday: %d\n"
+        print_tues:     .asciz "\nTuesday: %d\n"
+        print_wed:      .asciz "\nWednesday: %d\n"
+        print_thurs:    .asciz "\nThursday: %d\n"
+        print_fri:      .asciz "\nFriday: %d\n"
+        print_sat:      .asciz "\nSaturday: %d\n"
+        print_sun:      .asciz "\nSunday: %d\n"
 	format_select:	.asciz "%d"
 	select_buff:	.word 0
