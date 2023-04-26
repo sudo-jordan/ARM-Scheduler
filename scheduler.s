@@ -227,13 +227,13 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	b flexCheck
 
 schedule: @Print a portion of the schedule
-	ldreq r0, =choose_sched
-	bleq printf
-	ldreq r0, =format_select
-	ldreq r1, =select_buff
-	bleq scanf
-	ldreq r1, =select_buff
-	ldreq r1, [r1]
+	ldr r0, =choose_sched
+	bl printf
+	ldr r0, =format_select
+	ldr r1, =select_buff
+	bl scanf
+	ldr r1, =select_buff
+	ldr r1, [r1]
 
 	cmp r1, #1
 	moveq r1, r2
