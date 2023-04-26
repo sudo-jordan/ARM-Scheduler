@@ -2,7 +2,7 @@
 @Created by Jordan Saleh and William Daniel Vasquez
 @R2-8 are used to hold data for days of the week
 .global main
-setup:
+main:
 mov r2, #0
 mov r3, #0
 mov r4, #0
@@ -10,7 +10,9 @@ mov r5, #0
 mov r6, #0
 mov r7, #0
 mov r8, #0
-main:
+b loop
+
+loop:
 
 @ print entire menu
 	ldr r0, =welcome
@@ -61,7 +63,7 @@ main:
 	cmp r1, #6
 	beq exit
 
-	b main @If none of the above are entered, restart loop
+	b loop @If none of the above are entered, restart loop
 
 takeInput:
 	push {lr}
@@ -99,25 +101,25 @@ set: @Add an event, set time
 	
 	cmp r1, #1 @Monday edit
 	bleq mondayEdit
-	beq main
+	beq loop
 	cmp r1, #2 @Tuesday edit
 	bleq tuesdayEdit
-	beq main
+	beq loop
 	cmp r1, #3 @Wednesday edit
 	bleq wednesdayEdit
-	beq main
+	beq loop
 	cmp r1, #4 @Thursday edit
 	bleq thursdayEdit
-	beq main
+	beq loop
 	cmp r1, #5 @Friday edit
 	bleq fridayEdit
-	beq main
+	beq loop
 	cmp r1, #6 @Saturday edit
 	bleq saturdayEdit
-	beq main
+	beq loop
 	cmp r1, #7 @Sunday edit
 	bleq sundayEdit
-	b main
+	b loop
 	
 clear: @clear time out
 	bl takeInput @take input, sets day choice to r1 and a time mask to r11
@@ -126,25 +128,25 @@ clear: @clear time out
 	
 	cmp r1, #1 @Monday clear
 	andeq r2, r11
-	beq main
+	beq loop
 	cmp r1, #2 @Tuesday clear
 	andeq r3, r11
-	beq main
+	beq loop
 	cmp r1, #3 @Wednesday clear
 	andeq r4, r11
-	beq main
+	beq loop
 	cmp r1, #4 @Thursday clear
 	andeq r5, r11
-	beq main
+	beq loop
 	cmp r1, #5 @Friday clear
 	andeq r6, r11
-	beq main
+	beq loop
 	cmp r1, #6 @Saturday clear
 	andeq r7, r11
-	beq main
+	beq loop
 	cmp r1, #7 @Sunday clear
 	andeq r8, r11
-	beq main
+	beq loop
 	
 flex: @Add an event, flexible time
 	ldr r0, =time_length
@@ -164,7 +166,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	cmp r0, #23
 	ldreq r0, =no_time
 	bleq printf
-        beq main
+        beq loop
 	
 	bl mondayEdit @Attempt to edit Monday
 	cmp r9, r2 @Check to see if r2 has been edited
@@ -172,7 +174,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	ldreq r0, =flex_monday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
-	beq main
+	beq loop
 	
 	bl tuesdayEdit @Attempt to edit Tuesday
 	cmp r9, r3 @Check to see if r3 has been edited
@@ -180,7 +182,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	ldreq r0, =flex_tuesday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
-	beq main
+	beq loop
 	
 	bl wednesdayEdit @Attempt to edit Wednesday
 	cmp r9, r4 @Check to see if r4 has been edited
@@ -188,7 +190,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	ldreq r0, =flex_wednesday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
-	beq main
+	beq loop
 	
 	bl thursdayEdit @Attempt to edit Thursday
 	cmp r9, r5 @Check to see if r5 has been edited
@@ -196,7 +198,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	ldreq r0, =flex_thursday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
-	beq main
+	beq loop
 	
 	bl fridayEdit @Attempt to edit friday
 	cmp r9, r6 @Check to see if r6 has been edited
@@ -204,7 +206,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	ldreq r0, =flex_friday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
-	beq main
+	beq loop
 	
 	bl saturdayEdit @Attempt to edit Saturday
 	cmp r9, r7 @Check to see if r7 has been edited
@@ -212,7 +214,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	ldreq r0, =flex_saturday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
-	beq main
+	beq loop
 	
 	bl sundayEdit @Attempt to edit Sunday
 	cmp r9, r8 @Check to see if r8 has been edited
@@ -220,7 +222,7 @@ flexCheck: @Check the first time slot for each day, attempting an edit. If none 
 	ldreq r0, =flex_sunday @Confirm placement
 	bleq printf
 	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
-	beq main
+	beq loop
 	
 	adds r0, #1 @Increment time slot counter
 	lsl r11, #1 @If no open time slots found, shift one time slot over
@@ -241,12 +243,12 @@ schedule: @Print a portion of the schedule
 	ldreq r0, =format_select
 	moveq r1, r2
 	bleq printf
-	beq main
+	beq loop
 
 	cmp r1, #2
 	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =print_tues
-	beq main
+	beq loop
 
 	cmp r1, #3
 	moveq r1, r4
@@ -254,7 +256,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	beq main
+	beq loop
 
 	cmp r1, #4
 	moveq r1, r5
@@ -262,7 +264,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	beq main
+	beq loop
 
 	cmp r1, #5
 	moveq r1, r6
@@ -270,7 +272,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	beq main
+	beq loop
 
 	cmp r1, #6
 	moveq r1, r7
@@ -278,7 +280,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	beq main
+	beq loop
 
 	cmp r1, #7
 	moveq r1, r8
@@ -286,7 +288,7 @@ schedule: @Print a portion of the schedule
 	bleq printf
 	ldreq r0, =select_buff
 	bleq printf
-	beq main
+	beq loop
 
 mondayEdit:
 	push {lr}
@@ -364,7 +366,7 @@ overlapCheck: @Check to ensure there is no overlap
 help: @Display help
 	ldr r0, =full_help
 	bl printf
-	b main @Return to the loop
+	b loop @Return to the loop
 
 exit: @Exit the program
 	ldr r0, =done
