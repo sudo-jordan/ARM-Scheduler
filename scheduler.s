@@ -47,9 +47,9 @@ loop:
 	cmp r1, #4
 	beq schedule
 
-@ if input is 5, perform option 5
+@ if input is 5, show help
 	cmp r1, #5
-	beq option4
+	beq help
 	
 @ if input is 6, quit the program
 	cmp r1, #6
