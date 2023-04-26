@@ -236,11 +236,10 @@ schedule: @Print a portion of the schedule
 	ldr r1, [r1]
 
 	cmp r1, #1
-	moveq r1, r2
 	ldreq r0, =print_mon
 	bleq printf
 	ldreq r0, =format_select
-	ldreq r1, =select_buff
+	moveq r1, r2
 	bleq printf
 	beq main
 
