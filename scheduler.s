@@ -57,8 +57,9 @@ loop:
 	
 	b loop @If none of the above are entered, restart loop
 
-set: @Add an event, set time
-        ldr r0, =start_time
+takeInput:
+	push {lr}
+	ldr r0, =start_time
         bl printf
         ldr r0, =format_select
         ldr r1, =select_buff
@@ -77,29 +78,60 @@ set: @Add an event, set time
         bl printf
         ldr r0, =format_select
         ldr r1, =select_buff
-        @ not sure if u wanna move it somewhere
         bl createTimeSlot @call to createTimeSlot
+	pop{lr}
+	bx lr @Return to either set or clear
+
+set: @Add an event, set time
+        bl takeInput @take input, sets day choice to r1 and time mask to r11
 	
 	cmp r1, #1 @Monday edit
-	bx mondayEdit
+	bl mondayEdit
 	b loop
 	cmp r1, #2 @Tuesday edit
-	bx tuesdayEdit
+	bl tuesdayEdit
 	b loop
 	cmp r1, #3 @Wednesday edit
-	bx wednesdayEdit
+	bl wednesdayEdit
 	b loop
 	cmp r1, #4 @Thursday edit
-	bx thursdayEdit
+	bl thursdayEdit
 	b loop
 	cmp r1, #5 @Friday edit
-	bx fridayEdit
+	bl fridayEdit
 	b loop
 	cmp r1, #6 @Saturday edit
-	bx saturdayEdit
+	bl saturdayEdit
 	b loop
 	cmp r1, #7 @Sunday edit
-	bx sundayEdit
+	bl sundayEdit
+	b loop
+	
+clear: @clear time out
+	bl takeInput @take input, sets day choice to r1 and a time mask to r11
+	ldr r12, =#0xFFFFFFFF
+	eor r11, r12 @Inverts r11
+	
+	cmp r1, #1 @Monday clear
+	bl mondayClear
+	b loop
+	cmp r1, #2 @Tuesday clear
+	bl tuesdayClear
+	b loop
+	cmp r1, #3 @Wednesday clear
+	bl wednesdayClear
+	b loop
+	cmp r1, #4 @Thursday clear
+	bl thursdayClear
+	b loop
+	cmp r1, #5 @Friday clear
+	bl fridayClear
+	b loop
+	cmp r1, #6 @Saturday clear
+	bl saturdayClear
+	b loop
+	cmp r1, #7 @Sunday clear
+	bl sundayClear
 	b loop
 	
 mondayEdit:
@@ -110,12 +142,20 @@ mondayEdit:
 	pop {lr}
 	bx lr
 	
+mondayClear:
+	and r2, r11
+	bx lr
+	
 tuesdayEdit:
 	push {lr}
 	mov r3, r9 @Setup for check
 	bl overlapCheck 
 	orreq r3, r11
 	pop {lr}
+	bx lr
+	
+tuesdayClear:
+	and r3, r11
 	bx lr
 
 wednesdayEdit:
@@ -125,6 +165,10 @@ wednesdayEdit:
 	orreq r4, r11
 	pop {lr}
 	bx lr
+	
+wednesdayClear:
+	and r4, r11
+	bx lr
 
 thursdayEdit:
 	push {lr}
@@ -132,6 +176,10 @@ thursdayEdit:
 	bl overlapCheck 
 	orreq r5, r11
 	pop {lr}
+	bx lr
+	
+thursdayClear:
+	and r5, r11
 	bx lr
 
 fridayEdit:
@@ -142,12 +190,20 @@ fridayEdit:
 	pop {lr}
 	bx lr
 
+fridayClear:
+	and r6, r11
+	bx lr
+	
 saturdayEdit:
 	push {lr}
 	mov r7, r9 @Setup for check
 	bl overlapCheck 
 	orreq r7, r11
 	pop {lr}
+	bx lr
+	
+saturdayClear:
+	and r7, r11
 	bx lr
 
 sundayEdit:
@@ -157,15 +213,19 @@ sundayEdit:
 	orreq r8, r11 @Only edit if there is no overlap
 	pop {lr}
 	bx lr
+	
+sundayClear:
+	and r8, r11
+	bx lr
 
-createTimeSlot: @Creates a mask for editing time slots
+createTimeSlot: @Creates a mask for editing time slots, r11
 	ldr r11, =#0xFFFFFFFF @reset time slot
 	mov r12, #32 @Number of bits
 	sub r12, r10 @Desired shift
 	lsl r11, r12 @r11 now has 1 bits equal to r10
 	lsr r11, r12 @Fully right-shifted
 	lsl r11, r9 @r11 in proper location
-	bx lr @return to setting
+	bx lr @return to takeInput
 	
 overlapCheck: @Check to ensure there is no overlap
 	mov r10, r9 @Copy into r10
@@ -176,8 +236,6 @@ overlapCheck: @Check to ensure there is no overlap
 	bx lr
 	
 flex: @Add an event, flexible time
-
-clear: @Clear out time
 
 schedule: @Print a portion of the schedule
 
