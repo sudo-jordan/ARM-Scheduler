@@ -1,15 +1,16 @@
-@scheduler.s
-@Created by Jordan Saleh and William Daniel Vasquez
-@R2-8 are used to hold data for days of the week
+@ scheduler.s
+@ Created by Jordan Saleh and William Daniel Vasquez
+@ r2-8 are used to hold data for days of the week
+
 .global main
 main:
+mov r2, #0
+mov r3, #0
 mov r4, #0
 mov r5, #0
 mov r6, #0
 mov r7, #0
 mov r8, #0
-mov r9, #0
-mov r10, #0
 b loop
 
 loop:
@@ -74,7 +75,7 @@ takeInput:
         bl scanf
         ldr r1, =select_buff
         ldr r1, [r1]
-        mov r11, r1 @Copy input to r11, this will be the start time
+        mov r9, r1 @Copy input to r9, this will be the start time
         @Take another input, same as before, use time_length for a prompt
         ldr r0, =time_length
         bl printf
@@ -83,7 +84,7 @@ takeInput:
 	bl scanf
         ldr r1, =select_buff
         ldr r1, [r1]
-        mov r12, r1 @Copy input to r12, this will be the length of the event
+        mov r10, r1 @Copy input to r10, this will be the length of the event
         @Take another input, same as before, use choose_day for a prompt
         ldr r0, =choose_day
         bl printf
@@ -98,7 +99,7 @@ takeInput:
 
 set: @Add an event, set time
         bl takeInput @take input, sets day choice to r1 and time mask to r11
-	
+
 	cmp r1, #1 @Monday edit
 	bleq mondayEdit
 	beq loop
@@ -120,34 +121,34 @@ set: @Add an event, set time
 	cmp r1, #7 @Sunday edit
 	bleq sundayEdit
 	b loop
-	
+
 clear: @clear time out
 	bl takeInput @take input, sets day choice to r1 and a time mask to r11
-	ldr r2, =#0xFFFFFFFF
-	eor r11, r2 @Inverts r11
-	
+	ldr r12, =#0xFFFFFFFF
+	eor r11, r12 @Inverts r11
+
 	cmp r1, #1 @Monday clear
-	andeq r4, r11
+	andeq r2, r11
 	beq loop
 	cmp r1, #2 @Tuesday clear
-	andeq r5, r11
+	andeq r3, r11
 	beq loop
 	cmp r1, #3 @Wednesday clear
-	andeq r6, r11
+	andeq r4, r11
 	beq loop
 	cmp r1, #4 @Thursday clear
-	andeq r7, r11
+	andeq r5, r11
 	beq loop
 	cmp r1, #5 @Friday clear
-	andeq r8, r11
+	andeq r6, r11
 	beq loop
 	cmp r1, #6 @Saturday clear
-	andeq r9, r11
+	andeq r7, r11
 	beq loop
 	cmp r1, #7 @Sunday clear
-	andeq r10, r11
+	andeq r8, r11
 	beq loop
-	
+
 flex: @Add an event, flexible time
 	ldr r0, =time_length
         bl printf
@@ -156,68 +157,75 @@ flex: @Add an event, flexible time
 	bl scanf
         ldr r1, =select_buff
         ldr r1, [r1]
-	mov r11, #0 @set start time at 0
-	mov r12, r1 @copy input into r12
+	mov r9, #0 @set start time at 0
+	mov r10, r1 @copy input into r10
 	bl createTimeSlot @Fully right-shifted time slot in r11
-	mov r3, #0
+	mov r0, #0
 	b flexCheck
-	
+
 flexCheck: @Check the first time slot for each day, attempting an edit. If none found, lsl r11 and check next time slot. Loop until all slots checked.
-	cmp r3, #23
+	cmp r0, #23
 	ldreq r0, =no_time
 	bleq printf
         beq loop
-	
+
 	bl mondayEdit @Attempt to edit Monday
-	cmp r2, r4 @Check to see if r4 has been edited
-	moveq r1, r3 @save the count to r1 for safekeeping
+	cmp r9, r2 @Check to see if r2 has been edited
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_monday @Confirm placement
 	bleq printf
+	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
-	
+
 	bl tuesdayEdit @Attempt to edit Tuesday
-	cmp r2, r5 @Check to see if r5 has been edited
-	moveq r1, r3 @save the count to r1 for safekeeping
+	cmp r9, r3 @Check to see if r3 has been edited
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_tuesday @Confirm placement
 	bleq printf
+	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
-	
+
 	bl wednesdayEdit @Attempt to edit Wednesday
-	cmp r2, r6 @Check to see if r6 has been edited
-	moveq r1, r3 @save the count to r1 for safekeeping
+	cmp r9, r4 @Check to see if r4 has been edited
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_wednesday @Confirm placement
 	bleq printf
+	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
-	
+
 	bl thursdayEdit @Attempt to edit Thursday
-	cmp r2, r7 @Check to see if r7 has been edited
-	moveq r1, r3 @save the count to r1 for safekeeping
+	cmp r9, r5 @Check to see if r5 has been edited
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_thursday @Confirm placement
 	bleq printf
+	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
-	
+
 	bl fridayEdit @Attempt to edit friday
-	cmp r2, r8 @Check to see if r8 has been edited
-	moveq r1, r3 @save the count to r1 for safekeeping
+	cmp r9, r6 @Check to see if r6 has been edited
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_friday @Confirm placement
 	bleq printf
+	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
-	
+
 	bl saturdayEdit @Attempt to edit Saturday
-	cmp r2, r9 @Check to see if r9 has been edited
-	moveq r1, r3 @save the count to r12 for safekeeping
+	cmp r9, r7 @Check to see if r7 has been edited
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_saturday @Confirm placement
 	bleq printf
+	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
-	
+
 	bl sundayEdit @Attempt to edit Sunday
-	cmp r2, r10 @Check to see if r10 has been edited
-	moveq r1, r3 @save the count to r1 for safekeeping
+	cmp r9, r8 @Check to see if r8 has been edited
+	moveq r1, r0 @save the count to r12 for safekeeping
 	ldreq r0, =flex_sunday @Confirm placement
 	bleq printf
+	@Add in a print of r12 here, so that it will say what time slot the event was placed in. Make sure you add eq to the end of every instruction
 	beq loop
-	
-	adds r3, #1 @Increment time slot counter
+
+	adds r0, #1 @Increment time slot counter
 	lsl r11, #1 @If no open time slots found, shift one time slot over
 	b flexCheck
 
@@ -234,12 +242,12 @@ schedule: @Print a portion of the schedule
 	ldreq r0, =print_mon
 	bleq printf
 	ldreq r0, =format_select
-	moveq r1, r4
+	moveq r1, r2
 	bleq printf
 	beq loop
 
 	cmp r1, #2
-	moveq r1, r5
+	moveq r1, r3
 	ldreq r0, =print_tues
 	bleq printf
 	ldreq r0, =select_buff
@@ -247,7 +255,7 @@ schedule: @Print a portion of the schedule
 	beq loop
 
 	cmp r1, #3
-	moveq r1, r6
+	moveq r1, r4
 	ldreq r0, =print_wed
 	bleq printf
 	ldreq r0, =select_buff
@@ -255,7 +263,7 @@ schedule: @Print a portion of the schedule
 	beq loop
 
 	cmp r1, #4
-	moveq r1, r7
+	moveq r1, r5
 	ldreq r0, =print_thurs
 	bleq printf
 	ldreq r0, =select_buff
@@ -263,7 +271,7 @@ schedule: @Print a portion of the schedule
 	beq loop
 
 	cmp r1, #5
-	moveq r1, r8
+	moveq r1, r6
 	ldreq r0, =print_fri
 	bleq printf
 	ldreq r0, =select_buff
@@ -271,7 +279,7 @@ schedule: @Print a portion of the schedule
 	beq loop
 
 	cmp r1, #6
-	moveq r1, r9
+	moveq r1, r7
 	ldreq r0, =print_sat
 	bleq printf
 	ldreq r0, =select_buff
@@ -279,7 +287,7 @@ schedule: @Print a portion of the schedule
 	beq loop
 
 	cmp r1, #7
-	moveq r1, r10
+	moveq r1, r8
 	ldreq r0, =print_sun
 	bleq printf
 	ldreq r0, =select_buff
@@ -288,76 +296,75 @@ schedule: @Print a portion of the schedule
 
 mondayEdit:
 	push {lr}
-	mov r2, r4 @Setup for check
-	bl overlapCheck 
-	orreq r4, r11
+	mov r9, r2 @Setup for check
+	bl overlapCheck
+	orreq r2, r11
 	pop {lr}
 	bx lr
-	
+
 tuesdayEdit:
 	push {lr}
-	mov r2, r5 @Setup for check
-	bl overlapCheck 
-	orreq r5, r11
+	mov r9, r3 @Setup for check
+	bl overlapCheck
+	orreq r3, r11
 	pop {lr}
 	bx lr
 
 wednesdayEdit:
 	push {lr}
-	mov r2, r6 @Setup for check
-	bl overlapCheck 
-	orreq r6, r11
+	mov r9, r4 @Setup for check
+	bl overlapCheck
+	orreq r4, r11
 	pop {lr}
 	bx lr
 
 thursdayEdit:
 	push {lr}
-	mov r2, r7 @Setup for check
-	bl overlapCheck 
-	orreq r7, r11
+	mov r9, r5 @Setup for check
+	bl overlapCheck
+	orreq r5, r11
 	pop {lr}
 	bx lr
 
 fridayEdit:
 	push {lr}
-	mov r2, r8 @Setup for check
-	bl overlapCheck 
-	orreq r8, r11
+	mov r9, r6 @Setup for check
+	bl overlapCheck
+	orreq r6, r11
 	pop {lr}
 	bx lr
-	
+
 saturdayEdit:
 	push {lr}
-	mov r2, r9 @Setup for check
-	bl overlapCheck 
-	orreq r9, r11
+	mov r9, r7 @Setup for check
+	bl overlapCheck
+	orreq r7, r11
 	pop {lr}
 	bx lr
 
 sundayEdit:
 	push {lr}
-	mov r2, r10 @Setup for check
-	bl overlapCheck 
-	orreq r10, r11 @Only edit if there is no overlap
+	mov r9, r8 @Setup for check
+	bl overlapCheck
+	orreq r8, r11 @Only edit if there is no overlap
 	pop {lr}
 	bx lr
 
 createTimeSlot: @Creates a mask for editing time slots, r11
-	ldr r0, =#0xFFFFFFFF @reset time slot
-	mov r2, #32 @Number of bits
-	sub r2, r12 @Desired shift
-	lsl r0, r2 @r0 now has 1 bits equal to r12
-	lsr r0, r2 @Fully right-shifted
-	lsl r0, r11 @r0 in proper location
-	mov r11, r0 @save in r11
+	ldr r11, =#0xFFFFFFFF @reset time slot
+	mov r12, #32 @Number of bits
+	sub r12, r10 @Desired shift
+	lsl r11, r12 @r11 now has 1 bits equal to r10
+	lsr r11, r12 @Fully right-shifted
+	lsl r11, r9 @r11 in proper location
 	bx lr @return to takeInput
-	
+
 overlapCheck: @Check to ensure there is no overlap
-	mov r0, r2 @Copy into r0
-	mov r1, r11 @Copy into r1
-	orr r0, r1
-	eor r0, r1
-	cmp r0, r1 @Exclusive or and or should be equal if there is no overlap
+	mov r10, r9 @Copy into r10
+	mov r0, r9 @Copy into r12
+	orr r0, r11
+	eor r10, r11
+	cmp r0, r10 @Exclusive or and or should be equal if there is no overlap
 	bx lr
 
 help: @Display help
